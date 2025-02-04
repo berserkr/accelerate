@@ -339,6 +339,11 @@ def ensure_weights_retied(param_init_fn, model: torch.nn.Module, device: torch.c
     for name in _tied_names:
         name = name.split(".")
         name, param_name = ".".join(name[:-1]), name[-1]
+
+        #scattermoe dolomite has no lm_head...
+        if name == 'lm_head':
+            continue
+        
         mod = model.get_submodule(name)
         param = getattr(mod, param_name)
 
